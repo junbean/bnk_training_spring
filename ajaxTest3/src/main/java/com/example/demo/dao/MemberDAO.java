@@ -30,6 +30,21 @@ public class MemberDAO {
 	    }
 	}
 	
+	public MemberDTO loginMember(String id, String pw) {
+		try {
+			String query = "SELECT * FROM tbl_member WHERE id=? AND pw=?";
+			MemberDTO member = jt.queryForObject(
+					query, 
+					new BeanPropertyRowMapper<MemberDTO>(MemberDTO.class),
+					id,
+					pw
+					);
+			return member;
+		} catch (EmptyResultDataAccessException e) {
+	        return null;
+	    }
+	} 
+	
 	// JDBC API를 활용한 SELECT 쿼리 실행
 	public List<MemberDTO> list() {
 		String query = "SELECT * FROM tbl_member";
@@ -53,6 +68,11 @@ public class MemberDAO {
 		return result;
 	}
 	
+	public int deleteMember(String id) {
+		String query = "DELETE tbl_member WHERE id=?";
+		int result = jt.update(query, id);
+		return result;
+	}
 	
 	public int updateMember(MemberDTO memberDTO) {
 		String query = "UPDATE tbl_member SET pw=?, name=?, phone=?, grade=? WHERE id=?";
