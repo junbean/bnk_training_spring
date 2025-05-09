@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatis.dao.IMemberDao">
+
+	<select id="getList" resultType="com.example.mybatis.dto.MemberDTO">
+		SELECT * FROM tbl_member
+	</select>
+	<select id="getMember" resultType="com.example.mybatis.dto.MemberDTO">
+		SELECT * FROM tbl_member WHERE id = #{id}
+	</select>
+	<update id="update">
+		UPDATE tbl_member SET pw=#{m.pw}, name=#{m.name}, phone=#{m.phone}, grade=#{m.grade} WHERE id = #{m.id}
+	</update>
+	<delete id="delete">
+		DELETE FROM tbl_member WHERE id = #{id}
+	</delete>
+	<insert id="insert">
+		INSERT INTO tbl_member VALUES(#{m.id}, #{m.pw}, #{m.name}, #{m.phone}, #{m.grade})
+	</insert>
+	
+</mapper>
