@@ -12,6 +12,6 @@ public class PostDTO {
     private String authorId;       // 작성자 id
     private Date regDate;          // 등록날짜
     private Date updateDate;       // 수정날짜
-    private Integer viewCount;     // 조회수
-    private Integer commentCount;  // 댓글수
+    private int viewCount;     // 조회수
+    private int commentCount;  // 댓글수
 }

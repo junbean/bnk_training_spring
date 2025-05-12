@@ -3,11 +3,23 @@
 <mapper namespace="com.example.board.dao.IPostDao">
 	
 	<select id="selectToList" resultType="com.example.board.dto.PostDTO">
-		SELECT * FROM posts
+		SELECT * FROM posts ORDER BY postId DESC
+	</select>
+	
+	<select id="selectToPage" resultType="com.example.board.dto.PostDTO">
+		SELECT * FROM 
+		(
+    		SELECT ROWNUM rn, p.*
+    		FROM posts p
+		) WHERE rn BETWEEN #{start} AND #{end}
 	</select>
 	
 	<select id="selectToOne" resultType="com.example.board.dto.PostDTO">
-		SELECT * FROM posts WHERE postId=#{postId}
+		SELECT * FROM posts WHERE postId = #{postId}
+	</select>
+	
+	<select id="getTotalPostCount" resultType="int">
+		SELECT COUNT(*) FROM posts
 	</select>
 	
 	<insert id="insert">
