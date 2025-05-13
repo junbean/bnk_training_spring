@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -14,33 +15,150 @@
 		<header>
 			<h1>🎭 공연의 모든 것</h1>
 			<nav>
-			  <a href="/">홈</a>
-			  <a href="/performance/list">공연 목록</a>
-			  <a href="/mypage">마이페이지</a>
-			  <a href="/login">로그인</a>
+			  	<a href="/">홈</a>
+			  	<a href="/performance/list">공연 목록</a>
+			  	<a href="/qna">건의사항</a>
+			  	
+		        <!-- 로그인 상태에 따른 메뉴 표시 -->
+		        <c:choose>
+		            <c:when test="${empty loginUser}">
+		                <a href="/login">로그인</a>
+		                <a href="/regist">회원 가입</a>
+		            </c:when>
+		            <c:otherwise>
+		                <a href="/mypage">마이페이지</a>
+		                <a href="/logout">로그아웃</a>
+		            </c:otherwise>
+		        </c:choose>
 			</nav>
 		</header>
 		
 		<div class="container">
 			<section class="section">
-		      <h2>🎬 현재 상영 중인 공연</h2>
-		      <div id="ongoingContainer" class="cards"></div>
+		        <h2>🎬 현재 상영 중인 공연</h2>
+		        <table border="1">
+		            <thead>
+		                <tr>
+            				<th>포스터</th>
+		                    <th>제목</th>
+		                    <th>장르</th>
+		                    <th>감독</th>
+		                    <th>상영 기간</th>
+		                    <th>가격</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		                <c:forEach var="perf" items="${ongoingList}">
+		                    <tr>
+		                    	<td>
+				                    <img src="${perf.imageUrl}" alt="${perf.title}" width="100" height="140" />
+				                </td>
+		                        <td>
+		                        	<a href="/performance/detail?id=${perf.performanceId}">
+								        ${perf.title}
+								    </a>
+								</td>
+		                        <td>${perf.genre}</td>
+		                        <td>${perf.director}</td>
+		                        <td>
+		                        	<fmt:formatDate value="${perf.startDate}" pattern="yyyy-MM-dd" />
+		                        	 ~ 
+		                        	<fmt:formatDate value="${perf.endDate}" pattern="yyyy-MM-dd" /></td>
+		                        <td>
+		                        	<fmt:formatNumber value="${perf.price}" type="number" groupingUsed="true" />원
+		                        </td>
+		                    </tr>
+		                </c:forEach>
+		            </tbody>
+		        </table>
 		    </section>
 			
 		    <section class="section">
-		      <h2>🎟️ 상영 예정 공연</h2>
-		      <div id="upcomingContainer" class="cards"></div>
+		        <h2>🎟️ 상영 예정 공연</h2>
+		        <table border="1">
+		            <thead>
+		                <tr>
+            				<th>포스터</th>
+		                    <th>제목</th>
+		                    <th>장르</th>
+		                    <th>감독</th>
+		                    <th>상영 기간</th>
+		                    <th>가격</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		                <c:forEach var="perf" items="${upcomingList}">
+		                	<!-- 제목, 장르, 감독, duration, imageUrl  -->
+		                    <tr>
+		                    	<td>
+				                    <img src="${perf.imageUrl}" alt="${perf.title}" width="100" height="140" />
+				                </td>
+		                        <td>
+		                        	<a href="/performance/detail?id=${perf.performanceId}">
+								        ${perf.title}
+								    </a>
+								</td>
+		                        <td>${perf.genre}</td>
+		                        <td>${perf.director}</td>
+		                        <td>
+		                        	<fmt:formatDate value="${perf.startDate}" pattern="yyyy-MM-dd" />
+		                        	 ~ 
+		                        	<fmt:formatDate value="${perf.endDate}" pattern="yyyy-MM-dd" /></td>
+		                        <td>
+		                        	<fmt:formatNumber value="${perf.price}" type="number" groupingUsed="true" />원
+		                        </td>
+		                    </tr>
+		                </c:forEach>
+		            </tbody>
+		        </table>
+		    </section>
+		    
+		    <section class="section">
+		        <h2>🫏 상영 종료 공연</h2>
+		        <table border="1">
+		            <thead>
+		                <tr>
+            				<th>포스터</th>
+		                    <th>제목</th>
+		                    <th>장르</th>
+		                    <th>감독</th>
+		                    <th>상영 기간</th>
+		                    <th>가격</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		                <c:forEach var="perf" items="${closedList}">
+		                    <tr>
+				                <td>
+				                    <img src="${perf.imageUrl}" alt="${perf.title}" width="100" height="140" />
+				                </td>
+		                        <td>
+		                        	<a href="/performance/detail?id=${perf.performanceId}">
+								        ${perf.title}
+								    </a>
+								</td>
+		                        <td>${perf.genre}</td>
+		                        <td>${perf.director}</td>
+		                        <td>
+		                        	<fmt:formatDate value="${perf.startDate}" pattern="yyyy-MM-dd" />
+		                        	 ~ 
+		                        	<fmt:formatDate value="${perf.endDate}" pattern="yyyy-MM-dd" /></td>
+		                        <td>
+		                        	<fmt:formatNumber value="${perf.price}" type="number" groupingUsed="true" />원
+		                        </td>
+		                    </tr>
+		                </c:forEach>
+		            </tbody>
+		        </table>
 		    </section>
 		</div>
 		
-		
-		<!-- 푸터 -->
-		<footer>&copy; 2025 공연 사이트 Corp. All rights reserved.</footer>
 		
 		
 		<script>
 			
 		    // 카드 HTML 생성 함수
+		    /*
 		    function createCardHTML(p) {
 		      return `
 		        <a class="card" href="/performance/detail?id=${p.performanceId}">
@@ -72,7 +190,7 @@
 		    loadPerformances("/performance/upcoming", "upcomingContainer");
 			
 			
-			
+			*/
 			
 			
 			
@@ -151,57 +269,10 @@
 				
 				
 			*/
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-			/*
-				
-				<div class="container">
-				<!-- 현재 상영작 -->
-				<section class="section">
-					<h2>🎬 현재 상영 중인 공연</h2>
-					<div class="cards-wrapper">
-						<div class="cards">
-							<c:forEach var="p" items="${nowList}">
-								<a class="card" href="/performance/detail?id=${p.performanceId}">
-									<img src="images/theater_movie_${p.performanceId}.jpg" alt="${p.title}" />
-									<div class="card-body">
-										<h3>${p.title}</h3>
-										<p>${p.category} · ${p.duration}분 · ${p.rating}</p>
-									</div>
-								</a>
-							</c:forEach>
-						</div>
-					</div>
-				</section>
-				
-				<!-- 상영 예정작 -->
-				<section class="section">
-					<h2>🎟️ 상영 예정 공연</h2>
-					<div class="cards-wrapper">
-				  		<div class="cards">
-				      		<c:forEach var="p" items="${upcomingList}">
-				        		<a class="card" href="/performance/detail?id=${p.performanceId}">
-				          			<img src="images/theater_movie_${p.performanceId}.jpg" alt="${p.title}" />
-				          			<div class="card-body">
-				            			<h3>${p.title}</h3>
-				            			<p>${p.category} · ${p.duration}분 · ${p.rating}</p>
-				          			</div>
-				        		</a>
-				      		</c:forEach>
-				     	</div>
-				 	</div>
-				</section>
-			</div>
-			*/
+			
+			<!-- 푸터 -->
+			//<footer>&copy; 2025 공연 사이트 Corp. All rights reserved.</footer>
+			
 		</script>
 	</body>
 </html>

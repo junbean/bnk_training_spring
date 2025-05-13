@@ -1,33 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.theater.dao.IPerformanceDao">
-	<!-- 전체 공연 리스트 반환 -->
+	<!-- 전체 공연 목록 -->
 	<select id="getPerformanceList" resultType="com.example.theater.dto.PerformanceDTO">
-		SELECT * FROM theater_performance
+	    SELECT 
+	        PERFORMANCE_ID AS performanceId,
+	        TITLE AS title,
+	        GENRE AS genre,
+	        DESCRIPTION AS description,
+	        DURATION AS duration,
+	        DIRECTOR AS director,
+	        CAST AS cast,
+	        AGE_LIMIT AS ageLimit,
+	        PRICE AS price,
+	        STATUS AS status,
+	        START_DATE AS startDate,
+	        END_DATE AS endDate,
+	        IMAGE_URL AS imageUrl,
+	        TOTAL_SEATS AS totalSeats,
+	        REMAINING_SEATS AS remainingSeats
+	    FROM theater_performance
 	</select>
 	
+	<!-- 상영 예정 공연 -->
 	<select id="getPerformanceUpComingList" resultType="com.example.theater.dto.PerformanceDTO">
-		SELECT * FROM theater_performance WHERE status LIKE 'UPCOMING'
+	    SELECT 
+	        PERFORMANCE_ID AS performanceId,
+	        TITLE AS title,
+	        GENRE AS genre,
+	        DESCRIPTION AS description,
+	        DURATION AS duration,
+	        DIRECTOR AS director,
+	        CAST AS cast,
+	        AGE_LIMIT AS ageLimit,
+	        PRICE AS price,
+	        STATUS AS status,
+	        START_DATE AS startDate,
+	        END_DATE AS endDate,
+	        IMAGE_URL AS imageUrl,
+	        TOTAL_SEATS AS totalSeats,
+	        REMAINING_SEATS AS remainingSeats
+	    FROM theater_performance
+	    WHERE STATUS = 'UPCOMING'
 	</select>
 	
+	<!-- 상영 중 공연 -->
 	<select id="getPerformanceOnGoingList" resultType="com.example.theater.dto.PerformanceDTO">
-		SELECT * FROM theater_performance WHERE status LIKE 'ONGOING'
+	    SELECT 
+	        PERFORMANCE_ID AS performanceId,
+	        TITLE AS title,
+	        GENRE AS genre,
+	        DESCRIPTION AS description,
+	        DURATION AS duration,
+	        DIRECTOR AS director,
+	        CAST AS cast,
+	        AGE_LIMIT AS ageLimit,
+	        PRICE AS price,
+	        STATUS AS status,
+	        START_DATE AS startDate,
+	        END_DATE AS endDate,
+	        IMAGE_URL AS imageUrl,
+	        TOTAL_SEATS AS totalSeats,
+	        REMAINING_SEATS AS remainingSeats
+	    FROM theater_performance
+	    WHERE STATUS = 'ONGOING'
 	</select>
 	
+	<!-- 종료된 공연 -->
 	<select id="getPerformanceClosedList" resultType="com.example.theater.dto.PerformanceDTO">
-		SELECT * FROM theater_performance WHERE status LIKE 'CLOSED'
+	    SELECT 
+	        PERFORMANCE_ID AS performanceId,
+	        TITLE AS title,
+	        GENRE AS genre,
+	        DESCRIPTION AS description,
+	        DURATION AS duration,
+	        DIRECTOR AS director,
+	        CAST AS cast,
+	        AGE_LIMIT AS ageLimit,
+	        PRICE AS price,
+	        STATUS AS status,
+	        START_DATE AS startDate,
+	        END_DATE AS endDate,
+	        IMAGE_URL AS imageUrl,
+	        TOTAL_SEATS AS totalSeats,
+	        REMAINING_SEATS AS remainingSeats
+	    FROM theater_performance
+	    WHERE STATUS = 'CLOSED'
 	</select>
-	
-	
 	
 	<!-- 공연 객체 반환 -->
 	<select id="getPerformanceById" resultType="com.example.theater.dto.PerformanceDTO">
-    	SELECT * FROM theater_performance WHERE PERFORMANCE_ID = #{performanceId}
+    	SELECT 
+	        PERFORMANCE_ID AS performanceId,
+	        TITLE AS title,
+	        GENRE AS genre,
+	        DESCRIPTION AS description,
+	        DURATION AS duration,
+	        DIRECTOR AS director,
+	        CAST AS cast,
+	        AGE_LIMIT AS ageLimit,
+	        PRICE AS price,
+	        STATUS AS status,
+	        START_DATE AS startDate,
+	        END_DATE AS endDate,
+	        IMAGE_URL AS imageUrl,
+	        TOTAL_SEATS AS totalSeats,
+	        REMAINING_SEATS AS remainingSeats 
+    	FROM theater_performance 
+    	WHERE PERFORMANCE_ID = #{performanceId}
 	</select>
 	
 	<!-- 공연 데이터 삽입 - 관리자만 가능 -->
 	<insert id="insertPerformance">
-		INSERT INTO theater_performance 
-		VALUES(theater_performance_seq.NEXTVAL, #{p.title}, #{p.category}, #{p.description}, #{p.duration}, #{p.director}, #{p.cast}, #{p.rating}, #{p.price}, #{p.status})
+		INSERT INTO theater_performance (
+	        PERFORMANCE_ID, TITLE, GENRE, DESCRIPTION, DURATION,
+	        DIRECTOR, CAST, AGE_LIMIT, PRICE, STATUS,
+	        START_DATE, END_DATE, IMAGE_URL, TOTAL_SEATS, REMAINING_SEATS
+	    ) VALUES (
+	        theater_performance_seq.NEXTVAL,
+	        #{title}, #{genre}, #{description}, #{duration},
+	        #{director}, #{cast}, #{ageLimit}, #{price}, #{status},
+	        #{startDate}, #{endDate}, #{imageUrl}, #{totalSeats}, #{remainingSeats}
+	    )
 	</insert>
+	
+	<!-- 공연 데이터 수정 - 관리자만 가능  -->
+	<update id="updatePerformance">
+	    UPDATE theater_performance
+	    SET
+	        TITLE = #{p.title},
+	        GENRE = #{p.genre},
+	        DESCRIPTION = #{p.description},
+	        DURATION = #{p.duration},
+	        DIRECTOR = #{p.director},
+	        CAST = #{p.cast},
+	        AGE_LIMIT = #{p.ageLimit},
+	        PRICE = #{p.price},
+	        STATUS = #{p.status},
+	        START_DATE = #{p.startDate},
+	        END_DATE = #{p.endDate},
+	        IMAGE_URL = #{p.imageUrl},
+	        TOTAL_SEATS = #{p.totalSeats},
+	        REMAINING_SEATS = #{p.remainingSeats}
+	    WHERE PERFORMANCE_ID = #{p.performanceId}
+	</update>
+
 </mapper>

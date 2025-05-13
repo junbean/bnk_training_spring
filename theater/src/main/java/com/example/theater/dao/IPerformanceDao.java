@@ -11,25 +11,16 @@ import com.example.theater.dto.PerformanceDTO;
 public interface IPerformanceDao {
 	// 공연 전체 조회
 	List<PerformanceDTO> getPerformanceList();
-	
 	// 현재 상영 예정 공연 조회
 	List<PerformanceDTO> getPerformanceUpComingList();
-	
 	// 현재 상영 중인 공연 조회
 	List<PerformanceDTO> getPerformanceOnGoingList();
-	
 	// 현재 상영 종료 공연 조회
 	List<PerformanceDTO> getPerformanceClosedList();	
-	
-	
 	// 선택 공연 조회 - 상세
-	PerformanceDTO getPerformanceById(
-		@Param("performanceId") int performanceId
-	);
-	
-	
+	PerformanceDTO getPerformanceById(@Param("performanceId") int performanceId);
 	// 공연 데이터 삽입
-	int insertPerformance(
-		@Param("p") PerformanceDTO performanceDTO
-	);
+	int insertPerformance(@Param("p") PerformanceDTO performanceDTO);
+	// 공연 데이터 수정
+	int ipdatePerformance(@Param("p") PerformanceDTO performanceDTO);
 }

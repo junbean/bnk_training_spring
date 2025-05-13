@@ -21,12 +21,12 @@ public class PerformanceViewController {
 	}
 	
 	@GetMapping("/detail")
-	public String showPerformanceDetail(
+	public String getPerformanceDetail(
 		@RequestParam("id") int performanceId, 
 		Model model
 	) {
 		PerformanceDTO performance = performanceDao.getPerformanceById(performanceId);
 		model.addAttribute("performance", performance);
-		return "performance/performanceDetail"; 
+        return "performance/performanceDetail";
 	}
 }
