@@ -17,7 +17,7 @@
 			<nav>
 			  	<a href="/">홈</a>
 			  	<a href="/performance/list">공연 목록</a>
-			  	<a href="/qna">건의사항</a>
+			  	<a href="/qna">qna</a>
 			  	
 		        <!-- 로그인 상태에 따른 메뉴 표시 -->
 		        <c:choose>

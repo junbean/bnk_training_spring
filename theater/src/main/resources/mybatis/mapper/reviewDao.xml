@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.theater.dao.IReviewDao">
+
+    <!-- 후기 등록 -->
+    <insert id="insertReview">
+        INSERT INTO THEATER_REVIEW (
+            REVIEW_ID,
+            PERFORMANCE_ID,
+            USER_ID,
+            REVIEW_CONTENT,
+            CREATED_DATE,
+            IS_PUBLIC
+        ) VALUES (
+            theater_review_seq.NEXTVAL,
+            #{r.performanceId},
+            #{r.userId},
+            #{r.reviewContent},
+            SYSDATE,
+            #{r.isPublic}
+        )
+    </insert>
+
+    <!-- 공연별 후기 리스트 -->
+    <select id="getReviewsByPerformance" resultType="com.example.theater.dto.ReviewDTO">
+        SELECT 
+            REVIEW_ID AS reviewId,
+            PERFORMANCE_ID AS performanceId,
+            USER_ID AS userId,
+            REVIEW_CONTENT AS reviewContent,
+            CREATED_DATE AS createdDate,
+            MODIFIED_DATE AS modifiedDate,
+            IS_PUBLIC AS isPublic
+        FROM THEATER_REVIEW
+        WHERE PERFORMANCE_ID = #{performanceId} AND IS_PUBLIC = 'Y'
+        ORDER BY CREATED_DATE DESC
+    </select>
+
+    <!-- 후기 수정 -->
+    <update id="updateReview">
+        UPDATE THEATER_REVIEW
+        SET REVIEW_CONTENT = #{r.reviewContent},
+            MODIFIED_DATE = SYSDATE,
+            IS_PUBLIC = #{r.isPublic}
+        WHERE REVIEW_ID = #{r.reviewId} AND USER_ID = #{r.userId}
+    </update>
+
+    <!-- 후기 삭제 -->
+    <delete id="deleteReview">
+        DELETE FROM THEATER_REVIEW
+  		WHERE REVIEW_ID = #{reviewId} AND USER_ID = #{userId}
+    </delete>
+
+    <!-- 특정 사용자의 후기 조회 (마이페이지용) -->
+    <select id="getReviewsByUser" resultType="com.example.theater.dto.ReviewDTO">
+        SELECT 
+            REVIEW_ID AS reviewId,
+            PERFORMANCE_ID AS performanceId,
+            USER_ID AS userId,
+            REVIEW_CONTENT AS reviewContent,
+            CREATED_DATE AS createdDate,
+            MODIFIED_DATE AS modifiedDate,
+            IS_PUBLIC AS isPublic
+        FROM THEATER_REVIEW
+        WHERE USER_ID = #{userId}
+        ORDER BY CREATED_DATE DESC
+    </select>
+
+</mapper>

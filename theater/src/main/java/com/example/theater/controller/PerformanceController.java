@@ -1,44 +1,78 @@
 package com.example.theater.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.theater.dao.IPerformanceDao;
+import com.example.theater.dao.IReservationDao;
+import com.example.theater.dao.IReviewDao;
 import com.example.theater.dto.MemberDTO;
 import com.example.theater.dto.PerformanceDTO;
+import com.example.theater.dto.ReviewDTO;
 
 import jakarta.servlet.http.HttpSession;
 
-@RestController
+@Controller
 @RequestMapping("/performance")
 public class PerformanceController {
-	private IPerformanceDao performanceDao;
-	
-	@Autowired
-	public PerformanceController(IPerformanceDao dao) {
-		performanceDao = dao;
-	}
+    private final IPerformanceDao performanceDao;
+    private final IReservationDao reservationDao;
+    private final IReviewDao reviewDao;
 
-	// 전체 공연 조회
-	@GetMapping("/list")
-	public List<PerformanceDTO> getAllPerformances() {
-		return performanceDao.getPerformanceList();
+	@Autowired
+	public PerformanceController(IPerformanceDao pDao, IReservationDao reservationDao, IReviewDao reviewDao) {
+		this.performanceDao = pDao;
+        this.reservationDao = reservationDao;
+        this.reviewDao = reviewDao;
 	}
 	
-	// 상영 예정 공연 조회
-	@GetMapping("/upcoming")
-	public List<PerformanceDTO> getUpComingPerformances() {
-		return performanceDao.getPerformanceUpComingList();
+
+	@GetMapping("/detail")
+	public String getPerformanceDetail(
+		@RequestParam("id") int performanceId, 
+        HttpSession session,
+		Model model
+	) {
+        // 공연 정보 조회
+		PerformanceDTO performance = performanceDao.getPerformanceById(performanceId);
+		model.addAttribute("performance", performance);
+
+        // 로그인 사용자 확인 및 예매 여부 체크
+        MemberDTO user = (MemberDTO) session.getAttribute("loginUser");
+        boolean alreadyReserved = false;
+        if (user != null) {
+            int count = reservationDao.countReservationByUserAndPerformance(user.getUserId(), performanceId);
+            alreadyReserved = (count > 0);
+        }
+        model.addAttribute("alreadyReserved", alreadyReserved);
+        
+	    // 3. 후기 목록 추가
+	    List<ReviewDTO> reviewList = reviewDao.getReviewsByPerformance(performanceId);
+	    model.addAttribute("reviewList", reviewList);
+			
+		return "performance/performanceDetail";
 	}
+	
+
+	@GetMapping("/list")
+	public String getPerformanceList(
+		@RequestParam("page") int page, 
+		Model model
+	) {
+		List<PerformanceDTO> performanceList = performanceDao.getPerformanceList();
+		model.addAttribute("performanceList", performanceList);
+        return "performance/performanceList";
+	}
+	
+	
+	
+	/*
 	
 	// 상영 중인 공연 조회
 	@GetMapping("/ongoing")
@@ -52,7 +86,6 @@ public class PerformanceController {
 		return performanceDao.getPerformanceClosedList();	
 	}
 	
-	/*
 	개선점 
 	
 	파라미터 -> 조건을 통한 조회	
@@ -88,45 +121,4 @@ public class PerformanceController {
 	}
 	
 	*/
-	
-	
-	// 공연 객체 가져오기 - performanceId 특정
-	@GetMapping("/{id}")
-	public PerformanceDTO getPerformanceById(
-		@PathVariable("id") int performanceId
-	) {
-		return performanceDao.getPerformanceById(performanceId);
-	}
-	
-	
-	// 공연 데이터 삽입 - 세션의 loginUser에서 isAdmin이 true일 경우에만
-	@PostMapping("/insert")
-	public Map<String, Object> insertPerformance(
-		@RequestBody PerformanceDTO performance,
-		HttpSession session
-	) {
-		// Map 객체 생성
-		Map<String, Object> result = new HashMap<>();
-
-		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
-
-		if (loginUser == null) {
-			result.put("success", false);
-			result.put("message", "로그인이 필요합니다.");
-			return result;
-		}
-		
-		// isAdmin 확인
-		if (!Boolean.TRUE.equals(loginUser.isAdmin())) {
-			result.put("success", false);
-			result.put("message", "관리자만 등록할 수 있습니다.");
-			return result;
-		}
-		
-		// 공연 데이터 삽입
-		int inserted = performanceDao.insertPerformance(performance);
-		result.put("success", inserted > 0);
-		return result;
-	}
 }
-

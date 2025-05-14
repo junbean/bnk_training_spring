@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.theater.dao.IReservationDao">
+	<!-- 1. 예매 등록 -->
+    <insert id="insertReservation">
+        INSERT INTO THEATER_RESERVATION (
+            RESERVATION_ID,
+            USER_ID,
+            PERFORMANCE_ID,
+            RESERVATION_DATE,
+            TOTAL_PRICE
+        )
+        VALUES (
+            theater_reservation_seq.NEXTVAL,
+            #{r.userId},
+            #{r.performanceId},
+            SYSDATE,
+            #{r.totalPrice}
+        )
+    </insert>
+
+    <!-- 2. 사용자별 예매 내역 조회 -->
+    <select id="getReservationsByUser" resultType="com.example.theater.dto.ReservationDTO">
+        SELECT 
+        	RESERVATION_ID as reservationId,
+            USER_ID as userId,
+            PERFORMANCE_ID as performanceId,
+            RESERVATION_DATE as reservationDate,
+            TOTAL_PRICE as totalPrice
+        )
+        FROM THEATER_RESERVATION
+        WHERE USER_ID = #{userId}
+        ORDER BY RESERVATION_DATE DESC
+    </select>
+
+    <!-- 3. 공연 예매 시 잔여 좌석 1 감소 -->
+    <update id="decreaseRemainingSeats">
+        UPDATE THEATER_PERFORMANCE
+        SET REMAINING_SEATS = REMAINING_SEATS - 1
+        WHERE PERFORMANCE_ID = #{performanceId}
+          AND REMAINING_SEATS > 0
+    </update>
+
+    <!-- 5. 예매 취소 시 좌석 수 복구 (1 증가) -->
+    <update id="increaseRemainingSeats">
+        UPDATE THEATER_PERFORMANCE
+        SET REMAINING_SEATS = REMAINING_SEATS + 1
+        WHERE PERFORMANCE_ID = #{performanceId}
+    </update>
+    
+    <!-- 사용자가 해당 공연을 했는지 \\\\\\\\\\\\\\\ -->  
+    <select id="countReservationByUserAndPerformance" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM THEATER_RESERVATION
+    	WHERE USER_ID = #{userId}
+    	AND PERFORMANCE_ID = #{performanceId}
+	</select>
+</mapper>

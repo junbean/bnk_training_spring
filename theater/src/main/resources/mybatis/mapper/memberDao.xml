@@ -5,8 +5,14 @@
 <mapper namespace="com.example.theater.dao.IMemberDao">
 	<select id="getMemberbyLogin"
 		resultType="com.example.theater.dto.MemberDTO">
-		SELECT * FROM theater_member WHERE USER_ID = #{userId} AND
-		PASSWORD = #{password}
+		SELECT 
+			USER_ID as userId,
+			PASSWORD,
+			NAME,
+			PHONE,
+        	IS_ADMIN AS isAdmin
+		FROM theater_member 
+		WHERE USER_ID = #{userId} AND PASSWORD = #{password}
 	</select>
 
 	<select id="checkUserIdExists" resultType="int">
