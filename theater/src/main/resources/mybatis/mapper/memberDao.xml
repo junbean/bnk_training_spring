@@ -10,7 +10,7 @@
 			PASSWORD,
 			NAME,
 			PHONE,
-        	IS_ADMIN AS isAdmin
+        	IS_ADMIN AS admin
 		FROM theater_member 
 		WHERE USER_ID = #{userId} AND PASSWORD = #{password}
 	</select>

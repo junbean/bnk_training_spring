@@ -70,7 +70,8 @@ public class MainController {
 	}
 	
 	@GetMapping("/qna/detail")
-	public String qnaDetail(@RequestParam("id") Long id, Model model) {
+	public String qnaDetail(@RequestParam("id") Long id, Model model, HttpSession session) {
+		System.out.println((MemberDTO) session.getAttribute("loginUser"));
 		QnaDTO qnaItem = qnaDao.getQnaById(id);
 		model.addAttribute("qnaItem", qnaItem);
 		return "qna/qnaDetail";

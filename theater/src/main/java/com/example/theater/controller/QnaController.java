@@ -55,18 +55,18 @@ public class QnaController {
 		Map<String, Object> result = new HashMap<>();
 	
 		MemberDTO adminUser = (MemberDTO) session.getAttribute("loginUser");
-        if (adminUser == null || !"admin".equals(adminUser.getUserId())) { // 혹은 isAdmin 체크
-            result.put("success", false);
-            result.put("message", "관리자 권한이 필요합니다.");
-            return result;
-        }
+	    if (adminUser == null || !adminUser.isAdmin()) {
+	        result.put("success", false);
+	        result.put("message", "관리자 권한이 필요합니다.");
+	        return result;
+	    }
 
-        Long qnaId = Long.valueOf(payload.get("qnaId").toString());
-        String answer = payload.get("answerContent").toString();
+	    Long qnaId = Long.valueOf(payload.get("qnaId").toString());
+	    String answer = payload.get("answerContent").toString();
 
-        int updated = qnaDao.updateAnswer(qnaId, answer, adminUser.getUserId());
-        result.put("success", updated > 0);
-        return result;
+	    int updated = qnaDao.updateAnswer(qnaId, answer, adminUser.getUserId());
+	    result.put("success", updated > 0);
+	    return result;
 	}
 	
 }
