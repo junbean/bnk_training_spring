@@ -23,6 +23,7 @@
 
 	    
 		<h2>✍️ Q&A 질문 작성</h2>
+		
 		<hr>
 	    <form id="qnaForm" onsubmit="submitQna(event)">
 	        <label for="questionContent">질문 내용</label><br>

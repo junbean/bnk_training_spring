@@ -10,9 +10,24 @@
 	</head>
 	<body>
 		<h2>📋 Q&A 목록</h2>
-		
+		<nav>
+		  	<a href="/">홈</a>
+		  	<a href="/performance/list">공연 목록</a>
+		  	<a href="/qna">qna</a>
+		  	
+	        <!-- 로그인 상태에 따른 메뉴 표시 -->
+	        <c:choose>
+	            <c:when test="${empty loginUser}">
+	                <a href="/login">로그인</a>
+	                <a href="/regist">회원 가입</a>
+	            </c:when>
+	            <c:otherwise>
+	                <a href="/mypage">마이페이지</a>
+	                <a href="/logout">로그아웃</a>
+	            </c:otherwise>
+	        </c:choose>
+		</nav>
 		<hr>
-		
 		<table border = "1">
 	        <thead>
 	            <tr>

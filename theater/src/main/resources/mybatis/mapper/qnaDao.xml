@@ -73,6 +73,16 @@
         WHERE QNA_ID = #{qnaId}
     </update>
     
+    <!-- 관리자 답변 삭제 -->
+    <update id="deleteAnswer">
+	    UPDATE THEATER_QNA
+	    SET ANSWER_CONTENT = NULL,
+	        ANSWER_DATE = NULL,
+	        ANSWER_ADMIN_ID = NULL,
+	        STATUS = 'WAITING'
+	    WHERE QNA_ID = #{qnaId}
+	</update>
+    
     <!-- 답변 상태만 업데이트 (필요 시) - 이건 잘 안쓸듯 -->
     <update id="updateStatus">
         UPDATE THEATER_QNA

@@ -21,12 +21,15 @@ public interface IQnaDao {
 	// 상세 조회
 	QnaDTO getQnaById(@Param("qnaId") Long qnaId);
 	
-	// 관리자 답변 드옥
+	// 관리자 답변 등록
 	int updateAnswer(
 		@Param("qnaId") Long qnaId,
 		@Param("answer") String answerContent,
 		@Param("adminId") String adminId
 	);
+	
+	// 관리자 답변 삭제
+	int deleteAnswer(@Param("qnaId") Long qnaId);
 	
 	// 답변 상태 업데이트 - 이건 잘 안 쓸듯
 	int updateStatus(

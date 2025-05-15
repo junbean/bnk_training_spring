@@ -1,0 +1,77 @@
+극장 공연 스프링 프로젝트 구현
+
+첫번째 - 회원과 공연 예매 시스템 구현
+	기본 기능
+		1. 사용자에게 회원가입과 로그인 기능을 제공
+		2. 메인페이지에서 공연 목록을 제공
+		3. 목록에서 공연을 선택 시 공연 상세 페이지 이동 후 공연의 상세 정보 및 예매버튼 제공
+		4. 사용자는 공연을 선택하여 예매기능 구현
+	요구 사항
+		
+	DB 테이블 설계 
+		회원
+			CREATE TABLE MEMBER (
+			    MEMBER_ID      VARCHAR2(50) PRIMARY KEY,
+			    PASSWORD       VARCHAR2(100) NOT NULL,
+			    NAME           VARCHAR2(100) NOT NULL,
+			    EMAIL          VARCHAR2(100),
+			    PHONE          VARCHAR2(20),
+			    ROLE           VARCHAR2(20) DEFAULT 'USER' CHECK (ROLE IN ('USER', 'ADMIN')), -- ← 여기 추가
+			    JOIN_DATE      DATE DEFAULT SYSDATE
+			);		
+			INSERT INTO MEMBER (MEMBER_ID, PASSWORD, NAME, EMAIL, PHONE, ROLE)
+			VALUES ('user01', 'pass1234', '김철수', 'chulsoo@example.com', '010-1234-5678', 'USER');
+			
+		공원
+			CREATE TABLE MEMBER (
+			    MEMBER_ID      VARCHAR2(50) PRIMARY KEY,
+			    PASSWORD       VARCHAR2(100) NOT NULL,
+			    NAME           VARCHAR2(100) NOT NULL,
+			    EMAIL          VARCHAR2(100),
+			    PHONE          VARCHAR2(20),
+			    ROLE           VARCHAR2(20) DEFAULT 'USER' CHECK (ROLE IN ('USER', 'ADMIN')), -- ← 여기 추가
+			    JOIN_DATE      DATE DEFAULT SYSDATE
+			);
+			INSERT INTO PERFORMANCE (PERFORMANCE_ID, TITLE, DESCRIPTION, START_DATE, END_DATE, STATUS)
+			VALUES (1, '뮤지컬 <영웅>', '안중근 의사를 다룬 감동 실화', TO_DATE('2025-05-20', 'YYYY-MM-DD'), TO_DATE('2025-06-30', 'YYYY-MM-DD'), '상영중');
+			
+			INSERT INTO PERFORMANCE (PERFORMANCE_ID, TITLE, DESCRIPTION, START_DATE, END_DATE, STATUS)
+			VALUES (2, '연극 <햄릿>', '셰익스피어 대표 비극 작품', TO_DATE('2025-06-01', 'YYYY-MM-DD'), TO_DATE('2025-07-15', 'YYYY-MM-DD'), '상영예정');
+			
+		좌석
+			CREATE TABLE SEAT (
+			    SEAT_ID         NUMBER PRIMARY KEY,
+			    PERFORMANCE_ID  NUMBER REFERENCES PERFORMANCE(PERFORMANCE_ID),
+			    SEAT_CODE       VARCHAR2(10), -- 예: A1, A2 등
+			    UNIQUE (PERFORMANCE_ID, SEAT_CODE)
+			);	
+			INSERT INTO SEAT (SEAT_ID, PERFORMANCE_ID, SEAT_CODE) VALUES (1, 1, 'A1');
+			INSERT INTO SEAT (SEAT_ID, PERFORMANCE_ID, SEAT_CODE) VALUES (2, 1, 'A2');
+			INSERT INTO SEAT (SEAT_ID, PERFORMANCE_ID, SEAT_CODE) VALUES (3, 1, 'A3');
+			INSERT INTO SEAT (SEAT_ID, PERFORMANCE_ID, SEAT_CODE) VALUES (4, 1, 'B1');
+			INSERT INTO SEAT (SEAT_ID, PERFORMANCE_ID, SEAT_CODE) VALUES (5, 1, 'B2');
+			INSERT INTO SEAT (SEAT_ID, PERFORMANCE_ID, SEAT_CODE) VALUES (6, 1, 'B3');
+			
+		예매
+			CREATE TABLE RESERVATION (
+			    RESERVATION_ID  NUMBER PRIMARY KEY,
+			    MEMBER_ID       VARCHAR2(50) REFERENCES MEMBER(MEMBER_ID),
+			    PERFORMANCE_ID  NUMBER REFERENCES PERFORMANCE(PERFORMANCE_ID),
+			    RESERVE_DATE    DATE NOT NULL, -- 사용자가 선택한 상영 날짜
+			    RESERVE_AT      DATE DEFAULT SYSDATE, -- 예매 일시
+			    STATUS          VARCHAR2(10) DEFAULT '예매완료', -- or '취소됨'
+			    UNIQUE (MEMBER_ID, PERFORMANCE_ID)
+			);
+			INSERT INTO RESERVATION (RESERVATION_ID, MEMBER_ID, PERFORMANCE_ID, RESERVE_DATE, RESERVE_AT, STATUS)
+			VALUES (1, 'user01', 1, TO_DATE('2025-06-01', 'YYYY-MM-DD'), SYSDATE, '예매완료');
+	
+	
+		
+			
+	참고
+		https://chatgpt.com/c/68255a8a-58c4-800a-a4c7-e3f885f54b6f
+		
+		
+		
+		
+두번째 - 미정
