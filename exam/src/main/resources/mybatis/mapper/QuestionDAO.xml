@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.exam.dao.QuestionDAO">
+	<select id="getQuestions" resultType="com.example.exam.dto.QuestionDTO">
+        SELECT 
+        	id,
+        	question_text AS questionText,
+        	option1,
+        	option2,
+        	option3,
+        	option4,
+        	correct_answer AS correctAnswer,
+        	explanation
+        FROM exam_question
+        ORDER BY id
+    </select>
+    
+	<select id="findById" parameterType="int" resultType="com.example.exam.dto.QuestionDTO">
+        SELECT 
+        	id,
+        	question_text AS questionText,
+        	option1,
+        	option2,
+        	option3,
+        	option4,
+        	correct_answer AS correctAnswer,
+        	explanation
+        FROM exam_question
+        WHERE id = #{id}
+    </select>
+</mapper>

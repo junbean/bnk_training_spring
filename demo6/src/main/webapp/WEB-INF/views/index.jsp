@@ -31,6 +31,7 @@
 		<h1>Index </h1>
 		<hr>
 		<a href="/sessionTest">session Test</a><br>
-		<a href="/login">로그인으로 이동</a>
+		<a href="/login">로그인으로 이동</a><br>
+		<a href="/jQuery">jQuery 실습</a>
 	</body>
 </html>
