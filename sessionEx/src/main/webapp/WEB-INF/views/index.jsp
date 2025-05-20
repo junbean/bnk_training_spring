@@ -13,6 +13,7 @@
 		<a href="/cookie">쿠키 로그인 페이지로 이동</a>
 		<hr>
 		<a href="/cookie-main">쿠키 발급받기</a>
-		
+		<hr>
+		<a href="/popupMain">팝업 메인 페이지로 이동</a>
 	</body>
 </html>

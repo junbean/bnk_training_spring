@@ -199,6 +199,7 @@ public class MyController {
 	
 	
 	// =====================================================
+	// 쿠키 기능
 	@GetMapping("/cookie-main")
 	public String cookieMain() {
 		return "cookieMain";
@@ -208,4 +209,29 @@ public class MyController {
 	public String cookieResult() {
 		return "cookieResult";
 	}
+
+	// =====================================================
+	// 팝업 쿠키 기능
+	@GetMapping("/popupMain")
+	public String popupMain() {
+		return "popupMain";
+	}
+	
+	@GetMapping("/popupCookie")
+	public @ResponseBody String popupCookie(HttpServletResponse response, HttpServletRequest request) {
+		System.out.println("팝업 쿠키");
+		String chkVal = request.getParameter("inactiveToday");
+		
+		if(chkVal != null && chkVal.equals("1")) {
+			Cookie cookie = new Cookie("PopupClose", "off");
+			cookie.setPath("/");
+			cookie.setMaxAge(60*60*24);
+			response.addCookie(cookie);
+		}
+		return "쿠키 : 하루 동안 열지 않음";
+	}
+	
+	// @RequestParam("inactiveToday") String chkVal
+	// System.out.println("popupCookie : " + chkVal);
+
 }
