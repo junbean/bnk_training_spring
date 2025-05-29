@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Write Page</h1>
+	<hr>
+	<form th:action="@{/write}" method="post">
+    	TITLE : <input type="text" name="title" placeholder="INPUT TITLE" required /><br>
+		CONTENT : <textarea name="content" placeholder="INPUT CONTENT" required></textarea><br>
+		USERNAME : <input type="text" name="writer" th:value="${loginUser.username}" readonly><br>
+		<input type="submit" value="write">
+	</form>
+</body>
+</html>
