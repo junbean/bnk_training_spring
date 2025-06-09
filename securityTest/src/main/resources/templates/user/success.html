@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>login success</h1>
+	<hr>
+	
+	<a href="/user/mypage">마이페이지</a>
+	
+	<!-- POST 방식으로 로그아웃 -->
+	<form th:action="@{/logout}" method="post" style="display:inline;">
+		<button type="submit">로그아웃</button>
+	</form>
+</body>
+</html>
