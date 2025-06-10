@@ -1,0 +1,54 @@
+
+/*
+
+
+멤버 아이디 - 고윰번호 - 
+유저네임 - 최대길이 50 - 중복안됨 - validation size 활용(최소 3, 최대 50)
+패스워드 - 최대길이 20 - validation size 활용(최소 2, 최대 20)
+이름 - 최대길이 13 - validation size 활용(최소 2, 최대 13, 메세지 "전화번호는 최대 13까지만 입력가능합니다")
+ 
+연락처
+	어노테이션 패턴
+		REGEXP(정규표현식, "전화번호 푠현식이 올바르지 않습니다") 
+
+BaseEntity
+	등록일자 - createdAt - 컬럼 어노테이션("reg_date", updatable=false) - @createdDate
+	수정일자 - modifiedAt - 컬럼 어노테이션("") - @LastModifiedDate
+
+entityListeners(value = audti.entity.listner.class)
+mapped(super.class)
+getter
+
+메인 어플레케이션
+@enableApaAuditing
+
+	
+
+MemoRepository
+
+*/
+
+
+
+
+
+
+
+멤버 
+id->자동증가
+
+username->실제 아이디->최대 길이 50, 중복X
+(column ->length=50 unique=true)->jpa 사용(DB에 데이터가 들어가는 시점에 적용)
+(size->최소 길이3,최대길이 50)->프로그램을 실행단계에서 사용(DB와는 무관함)
+
+password->column length=20  size->최소4,최대20
+name
+phone ->column length=13 size-> 최대13,message="전화번호는 최대 13자리까지 입력 가능합니다"
+pattern(regexp=정규표현식,message="전화번호 형식이 올바르지 않습니다")
+
+BaseEntity->추상 클래스 타입은 LocalDate  @EntityListeners(value={auditingEntityListener.class})
+            @MappedSuperclass
+            @Getter
+등록일자 createdAt column->name=regdate updatable=false @CreatedDate
+수정일자 modifiedAt column->name=moddate                    @LastModifiedDate(최종 수정)
+
