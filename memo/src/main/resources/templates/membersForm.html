@@ -11,7 +11,7 @@
 	   username : <input type="text" th:field="*{username}" placeholder="Input username..."/><br>
 	   <div class="error" th:errors="*{username}"></div>
 	   
-	   password : <input type="text" th:field="*{password}" placeholder="Input password..."/><br>
+	   password : <input type="password" th:field="*{password}" placeholder="Input password..."/><br>
 	   <div class="error" th:errors="*{password}"></div>
 	   
 	   name : <input type="text" th:field="*{name}" placeholder="Input name..."/><br>
@@ -19,6 +19,7 @@
 	   
 	   phone : <input type="text" th:field="*{phone}" placeholder="Input phone..."/><br>
 	   <div class="error" th:errors="*{phone}"></div>
+	   
 	   <input type="submit" value="등록">
 	</form>
 </body>
